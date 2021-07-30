@@ -32,4 +32,8 @@ spring:
         max-wait: 1500
 
 server:
-  port: 8080
+  port: 8888
+
+wx:
+  appId: wx15a5c88a0b9189a4
+  appSecret: b3134c810e28212f0fd6b9249900644e

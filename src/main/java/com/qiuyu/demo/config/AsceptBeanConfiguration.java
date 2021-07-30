@@ -3,7 +3,6 @@ package com.qiuyu.demo.config;
 import com.qiuyu.demo.aspect.ServiceRuntimeLogsAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @Description:

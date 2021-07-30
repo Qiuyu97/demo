@@ -31,6 +31,16 @@ class DemoApplicationTests {
 		// List<Double> list = Arrays.asList(23.31,313.123,42.0,41.0,1.0,451.12,43.21);
 	}
 
+	@Test
+	public void testStreamSorted()  {
+		List<Integer> numbers = Arrays.asList(3, 2, 2, 3, 7, 3, 5);
+		numbers.stream().distinct().map(i->i*i).sorted().forEach(System.out::println);
+		System.out.println();
+		numbers.stream().distinct().map(i->i*i).sorted((x,y)->y-x).forEach(System.out::println);
+		System.out.println();
+		System.out.println(numbers.parallelStream().distinct().mapToInt(i->i*i).sum());
+	}
+
 
 
 
