@@ -21,11 +21,11 @@ public class ApplicationContextUtil implements ApplicationContextAware {
         return applicationContext;
     }
 
-    public static <T> T getBeanByName(String name) {
-        return (T) applicationContext.getBean(name);
+    public static Object getBeanByName(String name) {
+        return  applicationContext.getBean(name);
     }
 
-    public static <T> T getBeanByClass(Class clazz) {
+    public static <T> T getBeanByClass(Class<T> clazz) {
         return (T) applicationContext.getBean(clazz);
     }
 }
