@@ -1,7 +1,9 @@
 package com.qiuyu.demo.resource;
 
+import com.qiuyu.demo.config.SnowFlakeProperties;
 import com.qiuyu.demo.service.OpenApiService;
 import com.qiuyu.demo.utils.PicUtils;
+import com.qiuyu.demo.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -25,11 +27,20 @@ public class OpenApiResource {
     @Autowired
     private OpenApiService openApiService;
 
+    @Autowired
+    private SnowFlakeProperties snowFlakeProperties;
+
 
     @GetMapping("/test/demo/{str}")
     public String productQuote(@PathVariable String str) {
 
         return openApiService.testAop();
+    }
+
+    @GetMapping("/test/getSnowFlakeId")
+    public String getSnowFlakeId() {
+
+        return String.valueOf(SnowFlake.getInstance().nextId());
     }
 
     /**

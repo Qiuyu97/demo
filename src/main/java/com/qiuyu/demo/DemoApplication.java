@@ -13,7 +13,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @SpringBootApplication
-@EnableScheduling
 @NacosPropertySource(dataId = "demo", autoRefreshed = true)
 public class DemoApplication {
 
@@ -49,6 +48,7 @@ public class DemoApplication {
                         "Application '{}' is running! Access URLs:\n\t" +
                         "Local: \t\t{}://localhost:{}{}\n\t" +
                         "External: \t{}://{}:{}{}\n\t" +
+                        "Doc: \t\t{}://{}:{}/doc.html\n\t"+
                         "Profile(s): \t{}\n----------------------------------------------------------",
                 env.getProperty("spring.application.name"),
                 protocol,
@@ -58,6 +58,9 @@ public class DemoApplication {
                 hostAddress,
                 serverPort,
                 contextPath,
+                protocol,
+                hostAddress,
+                serverPort,
                 env.getActiveProfiles());
     }
 }

@@ -8,26 +8,26 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.Executor;
 
 @Configuration
-@EnableAsync
+@Deprecated
 public class SchedulerConfig {
 
     /**
      * 此处成员变量应该使用@Value从配置中读取
      */
-    private final int corePoolSize = 20;
-    private final int maxPoolSize = 200;
-    private final int queueCapacity = 25;
-
-    @Bean
-    public Executor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(corePoolSize);
-        executor.setMaxPoolSize(maxPoolSize);
-        executor.setQueueCapacity(queueCapacity);
-        executor.initialize();
-        return executor;
-
-    }
+//    private final int corePoolSize = 20;
+//    private final int maxPoolSize = 200;
+//    private final int queueCapacity = 25;
+//
+//    @Bean
+//    public Executor taskExecutor() {
+//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//        executor.setCorePoolSize(corePoolSize);
+//        executor.setMaxPoolSize(maxPoolSize);
+//        executor.setQueueCapacity(queueCapacity);
+//        executor.initialize();
+//        return executor;
+//
+//    }
 
 
 }
