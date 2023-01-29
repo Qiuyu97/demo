@@ -27,9 +27,9 @@ public class AsyncConfig implements AsyncConfigurer,SchedulingConfigurer {
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //核心线程数量，线程池创建时候初始化的线程数
-        executor.setCorePoolSize(10);
+        executor.setCorePoolSize(Runtime.getRuntime().availableProcessors());
         //最大线程数，只有在缓冲队列满了之后才会申请超过核心线程数的线程
-        executor.setMaxPoolSize(40);
+        executor.setMaxPoolSize(Runtime.getRuntime().availableProcessors());
         //缓冲队列，用来缓冲执行任务的队列
         executor.setQueueCapacity(200);
         //当超过了核心线程出之外的线程在空闲时间到达之后会被销毁

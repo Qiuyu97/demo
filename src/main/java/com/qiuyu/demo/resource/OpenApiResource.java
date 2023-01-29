@@ -2,8 +2,10 @@ package com.qiuyu.demo.resource;
 
 import com.qiuyu.demo.config.SnowFlakeProperties;
 import com.qiuyu.demo.service.OpenApiService;
+import com.qiuyu.demo.study.designpatters.observe.springImpl.UserService;
 import com.qiuyu.demo.utils.PicUtils;
 import com.qiuyu.demo.utils.SnowFlake;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -17,6 +19,7 @@ import java.io.IOException;
  * @Author: qiuyu
  * @Date: 2021/3/8
  **/
+@Slf4j
 @RestController
 @RequestMapping("/open")
 public class OpenApiResource {
@@ -29,6 +32,9 @@ public class OpenApiResource {
 
     @Autowired
     private SnowFlakeProperties snowFlakeProperties;
+
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping("/test/demo/{str}")
@@ -77,5 +83,12 @@ public class OpenApiResource {
 //        out.close();
 //        System.out.println("begin-------->reading"+" "+ (System.currentTimeMillis()-start) +"ms");
 //    }
+
+
+    @GetMapping("/user/register")
+    public String userRegister(@RequestParam String username) {
+        userService.register(username);
+        return "ok";
+    }
 
 }

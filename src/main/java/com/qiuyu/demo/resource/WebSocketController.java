@@ -8,12 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @Author: qiuyu
  * @Date: 2021/4/7
  **/
-@Controller
+@Controller()
 public class WebSocketController {
 
-    @GetMapping("/index")
+    @GetMapping("/websocket/index")
     public String re(){
         return "sharedOrder";
+    }
+
+    @GetMapping("/sse")
+    public String sse(){
+        return "sse";
     }
 
 }
