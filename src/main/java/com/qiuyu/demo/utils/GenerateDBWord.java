@@ -36,15 +36,15 @@ public class GenerateDBWord {
         // 1、生成文件配置
         EngineConfig engineConfig = EngineConfig.builder()
                 //生成文件路径(改成自己的生成路径)
-                .fileOutputDir("C:\\Users\\qiuyu\\Desktop")
+                .fileOutputDir("C:\\Users\\11631\\Desktop")
                 //生成后是否立即打开目录
                 .openOutputDir(true)
                 //文件类型  有HTML、WORD、MD三种枚举选择
-                .fileType(EngineFileType.HTML)
+                .fileType(EngineFileType.WORD)
                 //生成模板实现
                 .produceType(EngineTemplateType.freemarker)
                 //自定义文件名称
-                .fileName("天目云3.0数据库文档").build();
+                .fileName("天目蓝云稿件模块数据库文档").build();
 
         //忽略表名（可选）
         ArrayList<String> ignoreTableName = new ArrayList<>();
@@ -78,7 +78,7 @@ public class GenerateDBWord {
                 //版本
                 .version("1.0.0")
                 //描述
-                .description("天目云3.0数据库文档")
+                .description("天目蓝云稿件模块数据库文档")
                 //数据源
                 .dataSource(dataSource)
                 //生成配置

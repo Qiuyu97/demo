@@ -1,8 +1,6 @@
 package com.qiuyu.demo.test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,8 +12,8 @@ public class HashMapTest {
 
     public static void main(String[] args) {
 
-        Map<String, String> map = new HashMap<>(20);
-        for (int i = 0; i < 20; i++) {
+        Map<String, String> map = new HashMap<>(32);
+        for (int i = 1; i < 25; i++) {
             map.put(String.valueOf(i),"value:"+i);
         }
     }
