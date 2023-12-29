@@ -17,7 +17,7 @@ public class TestMysqlSequence {
         String driver = "com.mysql.cj.jdbc.Driver";//mysql驱动
         String url = "jdbc:mysql://127.0.0.1:3306/demo";//连接地址
         String user = "root";//用户
-        String password = "123456";//密码
+        String password = "User123$";//密码
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl(url);
