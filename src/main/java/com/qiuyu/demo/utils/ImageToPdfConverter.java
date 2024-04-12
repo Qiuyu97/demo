@@ -26,8 +26,10 @@ import java.util.List;
 public class ImageToPdfConverter {
 
     public static void main(String[] args) throws IOException {
-        String imgFilePath = "E:\\STUDY\\1111.jpg";
-        String pdfFilePath = "E:\\STUDY\\1111.pdf";
+//        String imgFilePath = "E:\\STUDY\\软著申请\\2024R11L0110975-易聚合积分互联夺宝系统V1.0.0-签章页.jpg";
+//        String pdfFilePath = "E:\\STUDY\\软著申请\\2024R11L0110975-易聚合积分互联夺宝系统V1.0.0-签章页.pdf";
+        String imgFilePath = "D:\\STUDY\\软著申请\\2024-03-18  第二次补正材料\\软件名称说明.jpg";
+        String pdfFilePath = "D:\\STUDY\\软著申请\\2024-03-18  第二次补正材料\\《易聚合积分互联夺宝系统》软件名称说明.pdf";
         downloadPdf(imgFilePath, pdfFilePath);
     }
 
