@@ -24,9 +24,9 @@ public class GenerateDBWord {
         //数据源
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName("com.mysql.jdbc.Driver");
-        hikariConfig.setJdbcUrl("jdbc:mysql://10.200.80.221:3306/platform_article?serverTimezone=Asia/Shanghai");
-        hikariConfig.setUsername("tmy3");
-        hikariConfig.setPassword("3evCV2!ivx");
+        hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3306/fruit?serverTimezone=Asia/Shanghai");
+        hikariConfig.setUsername("root");
+        hikariConfig.setPassword("User123$");
         //设置可以获取tables remarks信息
         hikariConfig.addDataSourceProperty("useInformationSchema", "true");
         hikariConfig.setMinimumIdle(2);
@@ -44,7 +44,7 @@ public class GenerateDBWord {
                 //生成模板实现
                 .produceType(EngineTemplateType.freemarker)
                 //自定义文件名称
-                .fileName("天目蓝云稿件模块数据库文档").build();
+                .fileName("水果管理系统数据库文档").build();
 
         //忽略表名（可选）
         ArrayList<String> ignoreTableName = new ArrayList<>();
@@ -78,7 +78,7 @@ public class GenerateDBWord {
                 //版本
                 .version("1.0.0")
                 //描述
-                .description("天目蓝云稿件模块数据库文档")
+                .description("水果管理系统数据库文档")
                 //数据源
                 .dataSource(dataSource)
                 //生成配置
