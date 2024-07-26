@@ -1,5 +1,7 @@
 package com.qiuyu.demo.test;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +18,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
@@ -25,19 +28,35 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- *
  * 调用AI能力对内容进行内容分析
  */
 public class PeopleDailyArticleProcessing {
     private static final String API_URL = "https://api.coze.cn/open_api/v2/chat";
 
-    private static final String API_BOT_ID = "7395427520118210611";
-    private static final String API_TOKEN = "Bearer pat_dRujNtjkBHFcfZ5cickeFpMFI8nEioljCJfsEphrvzRoYws8vJKfxdJhivnUa59T";
+    private static final String[] API_BOT_IDS = {
+            "7395427520118210611",
+//            "7395760210600149003",
+//            "7395765930187407360",
+//            "7395766667038703616",
+//            "7395773217103249442",
+//            "7395773547844468771",
+//            "7395774250797269046",
+//            "7395774457748439066",
+//            "7395774635717017663",
+//            "7395774702742192167"
+    };
+    private static final String API_TOKEN = "Bearer pat_NdUVJVxds5o0N68sVlFMYN88qOfEv8yGhWn6zUwWvAZTEGj4EmloOAZUAA2elfM4";
     private static final int NUM_THREADS = 2;
     private static final int BATCH_QUERY_COUNT = 10;
     private static final ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
 
+    private static volatile int API_BOT_IDS_INDEX = 0;
+
     public static void main(String[] args) {
+        ((LoggerContext) LoggerFactory.getILoggerFactory())
+                .getLoggerList()
+                .forEach(logger -> logger.setLevel(Level.ERROR));
+        System.out.println("Now BotId: " + API_BOT_IDS[API_BOT_IDS_INDEX]);
         try {
             while (true) {
                 // 每次查10个 防止OOM
@@ -117,16 +136,18 @@ public class PeopleDailyArticleProcessing {
     }
 
     private static AiCheckResult processContent(Long id, String content) {
+        int apiBotIdsIndex = API_BOT_IDS_INDEX;
         System.out.println("processContent id: " + id + " content " + content);
         AiCheckResult aiCheckResult = new AiCheckResult();
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("conversation_id", "123456");
-            jsonObject.put("bot_id", API_BOT_ID);
-            jsonObject.put("user", "133333333333");
+            jsonObject.put("conversation_id", "12345678");
+            jsonObject.put("bot_id", API_BOT_IDS[API_BOT_IDS_INDEX]);
+            jsonObject.put("user", "133333333334");
             jsonObject.put("query", content.trim().replace("\n", ""));
             jsonObject.put("stream", false);
             String resp = sendPostRequest(API_URL, API_TOKEN, jsonObject.toJSONString());
+            System.out.println("processContent id: " + id + " resp " + resp);
             if (StringUtils.isNotBlank(resp) && JSONUtil.isJson(resp)) {
                 CoziResult coziResult = JSONUtil.toBean(resp, CoziResult.class);
                 if (coziResult.isSuccess()) {
@@ -166,8 +187,21 @@ public class PeopleDailyArticleProcessing {
                             // 处理成功，获取到有效的json
                             aiCheckResult.setSuccess(true);
                         }
+                        else if (answer.getContent().contains("对不起，我无法回答这个问题")) {
+                            System.out.println("此问题无法回答 id " + id);
+                            // 这种场景当做处理成功，不匹配
+                            aiCheckResult.setSuccess(true);
+                        }
                     }
-                } else {
+                }
+                else if (702232005 == coziResult.getCode()) {
+                    System.out.println("request AI waring id: " + id + " now API_BOT_IDS_INDEX: " + apiBotIdsIndex);
+//                    reIndex(apiBotIdsIndex);
+                }
+                else if (702240703 == coziResult.getCode()) {
+                    System.out.println("request AI waring id: " + id + " result: " + coziResult);
+                }
+                else {
                     System.out.println("request AI error id: " + id + " result: " + coziResult);
                     System.exit(Math.toIntExact(id));
                 }
@@ -208,6 +242,23 @@ public class PeopleDailyArticleProcessing {
         }
 
         return responseBody;
+    }
+
+    /**
+     * 切换机器人 双检锁确保线程安全
+     *
+     * @param nowIndex
+     */
+    private static void reIndex(int nowIndex) {
+        if (API_BOT_IDS_INDEX - nowIndex == 0) {
+            synchronized (PeopleDailyArticleProcessing.class) {
+                if (API_BOT_IDS_INDEX - nowIndex == 0) {
+                    int length = API_BOT_IDS.length;
+                    API_BOT_IDS_INDEX = (API_BOT_IDS_INDEX + 1) % length;
+                    System.out.println("Now BotId: " + API_BOT_IDS[API_BOT_IDS_INDEX]);
+                }
+            }
+        }
     }
 
     private static class AiCheckStatus {
