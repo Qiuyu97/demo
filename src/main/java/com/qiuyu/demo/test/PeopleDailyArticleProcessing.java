@@ -34,20 +34,16 @@ public class PeopleDailyArticleProcessing {
     private static final String API_URL = "https://api.coze.cn/open_api/v2/chat";
 
     private static final String[] API_BOT_IDS = {
-            "7395427520118210611",
-//            "7395760210600149003",
-//            "7395765930187407360",
-//            "7395766667038703616",
-//            "7395773217103249442",
-//            "7395773547844468771",
-//            "7395774250797269046",
-//            "7395774457748439066",
-//            "7395774635717017663",
-//            "7395774702742192167"
+//            "7395427520118210611",
+            "7395896027108818996",
+            "7395896152321064975",
+            "7395896203436998697",
+            "7395896318428299315",
+            "7395896527996239882"
     };
-    private static final String API_TOKEN = "Bearer pat_NdUVJVxds5o0N68sVlFMYN88qOfEv8yGhWn6zUwWvAZTEGj4EmloOAZUAA2elfM4";
+    private static final String API_TOKEN = "Bearer pat_mhYJQSZQl8FBJeWgOn2af6Mhpvrau57C7Ke5uQqOapMPiUoEp7E7GGQn6BnNlFwF";
     private static final int NUM_THREADS = 2;
-    private static final int BATCH_QUERY_COUNT = 10;
+    private static final int BATCH_QUERY_COUNT = 100;
     private static final ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
 
     private static volatile int API_BOT_IDS_INDEX = 0;
@@ -186,24 +182,21 @@ public class PeopleDailyArticleProcessing {
                             }
                             // 处理成功，获取到有效的json
                             aiCheckResult.setSuccess(true);
-                        }
-                        else if (answer.getContent().contains("对不起，我无法回答这个问题")) {
+                        } else if (answer.getContent().contains("对不起，我无法回答这个问题")) {
                             System.out.println("此问题无法回答 id " + id);
                             // 这种场景当做处理成功，不匹配
                             aiCheckResult.setSuccess(true);
                         }
                     }
-                }
-                else if (702232005 == coziResult.getCode()) {
+                } else if (702232005 == coziResult.getCode()) {
+                    // 702232005 次数限制
                     System.out.println("request AI waring id: " + id + " now API_BOT_IDS_INDEX: " + apiBotIdsIndex);
-//                    reIndex(apiBotIdsIndex);
-                }
-                else if (702240703 == coziResult.getCode()) {
+                    reIndex(apiBotIdsIndex);
+                } else if (702240703 == coziResult.getCode()) {
                     System.out.println("request AI waring id: " + id + " result: " + coziResult);
-                }
-                else {
+                } else {
                     System.out.println("request AI error id: " + id + " result: " + coziResult);
-                    System.exit(Math.toIntExact(id));
+//                    System.exit(Math.toIntExact(id));
                 }
             }
         } catch (Exception e) {
