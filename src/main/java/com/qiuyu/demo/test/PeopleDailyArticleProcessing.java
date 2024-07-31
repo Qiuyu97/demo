@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -34,7 +35,7 @@ public class PeopleDailyArticleProcessing {
     private static final String API_URL = "https://api.coze.cn/open_api/v2/chat";
 
     private static final String[] API_BOT_IDS = {
-//            "7395427520118210611",
+            "7395427520118210611",
             "7395896027108818996",
             "7395896152321064975",
             "7395896203436998697",
@@ -47,6 +48,8 @@ public class PeopleDailyArticleProcessing {
     private static final ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
 
     private static volatile int API_BOT_IDS_INDEX = 0;
+
+    private static int API_BOT_ID_COUNT = API_BOT_IDS.length;
 
     public static void main(String[] args) {
         ((LoggerContext) LoggerFactory.getILoggerFactory())
@@ -65,7 +68,7 @@ public class PeopleDailyArticleProcessing {
                         executor.execute(() -> {
                             Long id = article.getId();
                             try {
-                                System.out.println(">>>>>> Start AI check ID :" + id);
+                                System.out.println(">>>>>> Start AI check ID :" + id + " now: " + LocalDateTime.now());
                                 startChecking(id);
                                 AiCheckResult aiCheckResult = processContent(id, article.getContent());
                                 if (aiCheckResult.getSuccess()) {
@@ -196,7 +199,7 @@ public class PeopleDailyArticleProcessing {
                     System.out.println("request AI waring id: " + id + " result: " + coziResult);
                 } else {
                     System.out.println("request AI error id: " + id + " result: " + coziResult);
-//                    System.exit(Math.toIntExact(id));
+                    System.exit(Math.toIntExact(id));
                 }
             }
         } catch (Exception e) {
